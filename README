@@ -1,0 +1,24 @@
+this is a program to test mail server
+
+installation(first time):
+    1. move config.py.example -> config.py
+    2. edit config.py
+    3. setting up /etc/aliases
+
+config.py   -> config
+testcase.py -> test case object class
+main.py     -> master of threads
+
+sender.py   -> sleep and enqueue cases
+listener.py -> recieve mail then dequeue
+notifier.py -> pickup timeout cases
+
+this program assume 'localhost' mail server is working well,
+    testing target server sending mail:
+        this program use target server to sendmail(smtp, support auth),
+        you can send email back to this server(by setting `Receiver`),
+        and deliver mail to port 10025.
+    testing target server receiving mail:
+        this program use localhost to send mail to target,
+        you need to forward mail back to this server(set .forward on target),
+        and deliver mail to port 10025.

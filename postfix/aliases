@@ -1,0 +1,1 @@
+mailtester:  "| /usr/bin/nc -N localhost 10025"

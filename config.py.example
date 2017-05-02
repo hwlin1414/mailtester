@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+Config = {
+    'listen': ("127.0.0.1", 10025),
+    'case': [
+        {
+            'Title':        "",
+            'Host':         "",
+            'Protocol':     "smtps",
+            'StartTLS':     False,
+            'From':         "",
+            'Receiver':     "",
+            'Timeout':      20,
+            'Interval':     300,
+            'Login':        ("username", "password"),
+            'Notification': ["your@email.com"],
+            'Message':      "{Protocol}://{Host} error({errmsg})",
+        },
+        {
+            'Title':        "",
+            'Host':         "",
+            'Protocol':     "smtp",
+            'StartTLS':     True,
+            'From':         "",
+            'Receiver':     "",
+            'Timeout':      20,
+            'Interval':     300,
+            'Login':        False,
+            'Notification': ["your@email.com"],
+            'Message':      "{Protocol}://{Host} error({errmsg})",
+        }
+    ]
+]
