@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import logging
+import logging.handlers
 import sys
 import time
 import random
@@ -12,13 +13,20 @@ import email.parser
 import email.mime
 import email.mime.text
 
-FORMAT = "%(asctime)-15s [%(levelname)s] %(name)s: %(message)s"
+#FORMAT = '%(asctime)-15s [%(levelname)s] %(name)s %(message)s'
+FORMAT = '%(name)s: [%(levelname)s] %(message)s'
 DATEFMT = "%Y-%m-%d %H:%M:%S"
 
 logging.basicConfig(format=FORMAT, level=logging.INFO, datefmt=DATEFMT)
 log_formatter = logging.Formatter(fmt=FORMAT, datefmt=DATEFMT)
+log_handler = logging.handlers.SysLogHandler(
+    facility=logging.handlers.SysLogHandler.LOG_LOCAL3,
+    address = '/dev/log'
+)
+log_handler.setFormatter(log_formatter)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+logger.addHandler(log_handler)
 
 DEFAULT = {
     'Title': "",
