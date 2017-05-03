@@ -33,6 +33,6 @@ for t in threads:
 try:
     for t in threads:
         while t.isAlive():
-            t.join(1)
+            t.join(5)
 except KeyboardInterrupt:
     logger.info('Program Stop')
