@@ -3,6 +3,8 @@
 
 Config = {
     'listen': ("127.0.0.1", 10025),
+    'unknownNotification': [],
+    'unknownMessage': "Recieve delayed Mail (token: {token})",
     'case': [
         {
             'Title':        "",

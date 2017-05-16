@@ -11,6 +11,8 @@ import smtplib
 import email
 import email.parser
 import email.mime
+import email.mime.application
+import email.mime.multipart
 import email.mime.text
 
 #FORMAT = '%(asctime)-15s [%(levelname)s] %(name)s %(message)s'
@@ -99,6 +101,23 @@ class TestCase():
             self.notify(errmsg)
             return False
         return True
+
+def unknownNotification(config, delayedMail):
+    token = getToken(delayedMail)
+    smtp = smtplib.SMTP('localhost')
+    for m in config['unknownNotification']:
+        msg = email.mime.multipart.MIMEMultipart()
+        msg['Subject'] = 'MailTester Warning: delayed Mail'.format()
+        msg['From'] = 'mailtester'
+        msg['To'] = m
+        content = email.mime.text.MIMEText(config['unknownMessage'].format(token = token))
+        attachment = email.mime.application.MIMEApplication(delayedMail, "delayMail.txt")
+        attachment['Content-Disposition'] = 'attachment; filename="delayMail.txt"'
+        msg.attach(content)
+        msg.attach(attachment)
+        smtp.sendmail('mailtester', [m], msg.as_string())
+    smtp.quit()
+    pass
 
 def getToken(mail):
     parser = email.parser.Parser()

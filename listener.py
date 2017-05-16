@@ -37,15 +37,24 @@ class Handler(asyncore.dispatcher_with_send):
             self.close()
     def handle_close(self):
         logger.debug("mail recieved")
+        #f = open("maillog", "a")
+        #f.write(self.rbuf)
+        #f.close()
         token = testcase.getToken(self.rbuf)
 
-        lock = self._config['lock']
-        lock.acquire()
-        for r in self._config['runtime'][:]:
-            if r.check(token):
-                logger.info("recieve token: {token}".format(token = r.config['token']))
-                self._config['runtime'].remove(r)
-        lock.release()
+        if token is not None:
+            lock = self._config['lock']
+            lock.acquire()
+            removed = False
+            for r in self._config['runtime'][:]:
+                if r.check(token):
+                    logger.info("recieve token: {token}".format(token = r.config['token']))
+                    self._config['runtime'].remove(r)
+                    removed = True
+            if removed == False:
+                logger.info("recieve unknown token: {token}".format(token = token))
+                testcase.unknownNotification(self._config, self.rbuf)
+            lock.release()
 
 class Listener(asyncore.dispatcher):
     def __init__(self, config):
