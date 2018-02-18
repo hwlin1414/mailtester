@@ -54,7 +54,17 @@ class TestCase():
         self.config['token'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
     def check(self, token):
         if self.config['token'] == token:
-            self.origin['online'] = True
+            if self.origin['online'] == False:
+                self.origin['online'] = True
+                self.config['errmsg'] = 'recovered'
+                smtp = smtplib.SMTP('localhost')
+                for m in self.config['Notification']:
+                    msg = email.mime.text.MIMEText(self.config['Message'].format(**self.config))
+                    msg['Subject'] = 'MailTester Recover: {host}'.format(host = self.config['Host'])
+                    msg['From'] = 'mailtester'
+                    msg['To'] = m
+                    smtp.sendmail('mailtester', [m], msg.as_string())
+                smtp.quit()
             return True
         return False
     def expired(self):
